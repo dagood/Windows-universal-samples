@@ -9,7 +9,10 @@
 //
 //*********************************************************
 
+using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -36,14 +39,30 @@ namespace SDKTemplate
         /// </summary>
         /// <param name="e">Event data that describes how this page was reached. The Parameter
         /// property is typically used to configure the page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             var args = e.Parameter as ProtocolActivatedEventArgs;
 
             // Display the result of the protocol activation if we got here as a result of being activated for a protocol.
             if (args != null)
             {
-                rootPage.NotifyUser("Protocol activation received. The received URI is " + args.Uri.AbsoluteUri + ".", NotifyType.StatusMessage);
+                rootPage.NotifyUser(
+                    $"Protocol activation received. The received URI is {args.Uri.AbsoluteUri}.",
+                    NotifyType.StatusMessage);
+
+                string abs = args.Uri.OriginalString;
+                if (abs.StartsWith("http://"))
+                {
+                    abs = "httpredirect://" + abs.Substring("http://".Length);
+                }
+                if (abs.StartsWith("https://"))
+                {
+                    abs = "httpsredirect://" + abs.Substring("https://".Length);
+                }
+
+                await Launcher.LaunchUriAsync(new Uri(abs));
+
+                Application.Current.Exit();
             }
         }
     }

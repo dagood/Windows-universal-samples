@@ -1,0 +1,2 @@
+MainPackage=C:\git\Windows-universal-samples\Samples\AssociationLaunching\cs\bin\x64\Release\AssociationLaunching_1.0.2.0_x64.appx
+SymbolPackage=C:\git\Windows-universal-samples\Samples\AssociationLaunching\cs\AppPackages\AssociationLaunching_1.0.2.0_Test\AssociationLaunching_1.0.2.0_x64.appxsym
